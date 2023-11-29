@@ -1,4 +1,4 @@
-import { getAuthors, updateAuthor } from '../api/authorData';
+import { getAuthors, updateAuthor, createAuthor } from '../api/authorData';
 import { getBooks, createBook, updateBook } from '../api/bookData';
 import { showAuthors } from '../pages/authors';
 import { showBooks } from '../pages/books';
@@ -46,12 +46,12 @@ const formEvents = () => {
     // FIXME: ADD CLICK EVENT FOR SUBMITTING FORM FOR ADDING AN AUTHOR
     if (e.target.id.includes('submit-author')) {
       const payload = {
-        firstName: document.querySelector('#first_name').value,
-        lastName: document.querySelector('#last_name').value,
+        first_name: document.querySelector('#first_name').value,
+        last_name: document.querySelector('#last_name').value,
         email: document.querySelector('#email').value,
         favorite: document.querySelector('#favorite').checked,
       };
-      createBook(payload).then(({ name }) => {
+      createAuthor(payload).then(({ name }) => {
         const patchPayload = { firebaseKey: name };
 
         updateAuthor(patchPayload).then(() => {
@@ -64,14 +64,14 @@ const formEvents = () => {
     if (e.target.id.includes('update-author')) {
       const [, firebaseKey] = e.target.id.split('--');
       const payload = {
-        firstName: document.querySelector('#first_name').value,
-        lastName: document.querySelector('#last_name').value,
+        first_name: document.querySelector('#first_name').value,
+        last_name: document.querySelector('#last_name').value,
         email: document.querySelector('#email').value,
         favorite: document.querySelector('#favorite').checked,
         firebaseKey,
       };
 
-      updateBook(payload).then(() => {
+      updateAuthor(payload).then(() => {
         getAuthors().then(showAuthors);
       });
     }
