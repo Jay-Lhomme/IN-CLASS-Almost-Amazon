@@ -1,5 +1,5 @@
 import {
-  getAuthors, updateAuthor, getAuthorBooks
+  getAuthors, getSingleAuthor, getAuthorBooks
 } from '../api/authorData';
 import { getBooks, deleteBook, getSingleBook } from '../api/bookData';
 import { showBooks } from '../pages/books';
@@ -60,7 +60,9 @@ const domEvents = () => {
 
     // FIXME: ADD CLICK EVENT FOR EDITING AN AUTHOR
     if (e.target.id.includes('update-author-btn')) {
-      updateAuthor();
+      const [, firebaseKey] = e.target.id.split('--');
+
+      getSingleAuthor(firebaseKey).then((authObj) => addAuthorForm(authObj));
     }
 
     // ADD CLICK EVENT FOR VIEWING AN AUTHOR'S BOOKS

@@ -5,19 +5,19 @@ import { getAuthors, favoriteAuthors } from '../api/authorData';
 import { emptyAuthors, showAuthors } from '../pages/authors';
 
 // navigation events
-const navigationEvents = () => {
+const navigationEvents = (user) => {
   // LOGOUT BUTTON
   document.querySelector('#logout-button')
     .addEventListener('click', signOut);
 
   // TODO: BOOKS ON SALE
   document.querySelector('#sale-books').addEventListener('click', () => {
-    booksOnSale().then(showBooks);
+    booksOnSale(user.uid).then(showBooks);
   });
 
   // TODO: ALL BOOKS
   document.querySelector('#all-books').addEventListener('click', () => {
-    getBooks().then(showBooks);
+    getBooks(user.uid).then(showBooks);
   });
 
   // FIXME: STUDENTS Create an event listener for the Authors
@@ -25,11 +25,11 @@ const navigationEvents = () => {
   // 2. Convert the response to an array because that is what the makeAuthors function is expecting
   // 3. If the array is empty because there are no authors, make sure to use the emptyAuthor function
   document.querySelector('#authors').addEventListener('click', () => {
-    if (getAuthors().then(showAuthors)) { emptyAuthors(); }
+    if (getAuthors(user.uid).then(showAuthors)) { emptyAuthors(); }
   });
 
   document.querySelector('#favorite-authors').addEventListener('click', () => {
-    favoriteAuthors().then(showAuthors);
+    favoriteAuthors(user.id).then(showAuthors);
   });
 
   // STRETCH: SEARCH
@@ -37,6 +37,15 @@ const navigationEvents = () => {
     const searchValue = document.querySelector('#search').value.toLowerCase();
     console.warn(searchValue);
 
+    // const search = (e) => {
+    //   const userInput = e.target.value.toLowerCase();
+
+    //   const searchResult = (fireBasekey).filter((object) => object.title.toLowerCase().includes(userInput)
+    //   || object.author.toLowerCase().includes(userInput)
+    //   || object.description.toLowerCase().includes(userInput)
+    //   || object.email.toLowerCase().includes(userInput));
+    //   showBooks(searchResult).then(showAuthors(searchResult));
+    // };
     // WHEN THE USER PRESSES ENTER, MAKE THE API CALL AND CLEAR THE INPUT
     if (e.keyCode === 13) {
       // MAKE A CALL TO THE API TO FILTER ON THE BOOKS
